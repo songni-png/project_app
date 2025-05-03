@@ -4,7 +4,7 @@ import pandas as pd
 # 데이터 로드 (GitHub 데이터 활용)
 @st.cache_data
 def load_data():
-    walk_data = pd.read_csv("../branch/산책로 서울 추출.xlsx")  # 산책로 데이터
+    walk_data = pd.read_csv("branch/산책로 서울 추출.xlsx")  # 산책로 데이터
     activity_data = pd.read_csv("branch/서울_문화_시설_activity.csv")  # 활동 데이터
     return walk_data, activity_data
     
