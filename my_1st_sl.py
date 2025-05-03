@@ -1,33 +1,7 @@
 import streamlit as st
 import pandas as pd
 
-# 데이터 로드 (GitHub 데이터 활용)
-def load_data():
-    walk_data = pd.read_excel("https://raw.githubusercontent.com/songni-png/project_app/main/branch/산책로_서울_추출.xlsx")
-    activity_data = pd.read_csv("https://raw.githubusercontent.com/songni-png/project_app/main/branch/서울_문화_시설_activity.csv", encoding='utf-8-sig")
-    return walk_data, activity_data
 
-# 데이터 로드
-walk_data, activity_data = load_data()
-
-st.title("🎭 감정 기반 루틴 추천 시스템")
-st.subheader("🚶‍♂️ 산책로 추천")
-st.write(walk_data.head())  # 산책로 데이터 출력
-
-
-import streamlit as st
-import pandas as pd
-
-# 데이터 로드 (GitHub 데이터 활용)
-# st.cache_data
-def load_data():
-    walk_data = pd.read_excel("https://raw.githubusercontent.com/songni-png/project_app/main/branch/산책로_서울_추출.xlsx")
-    activity_data = pd.read_csv("https://raw.githubusercontent.com/songni-png/project_app/main/branch/서울_문화_시설_activity.csv", encoding='utf-8-sig")
-    return walk_data, activity_data
-
-    
-# 데이터 로드
-walk_data, activity_data = load_data()
 
 # 감정 ↔ 회복 방향 ↔ 추천 콘텐츠 매핑
 mapping_data = {
