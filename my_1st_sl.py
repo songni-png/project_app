@@ -16,9 +16,9 @@ def load_data():
     walk_data = pd.read_excel(data_path_2, header=1, encoding='utf-8')
     lib_data = pd.read_excel(data_path_3, header=1, encoding='utf-8')
     
-    return activity_data,walk_dat,lib_data
+    return activity_data,walk_data,lib_data
 
-activity_data,walk_dat,lib_data=load_data()
+activity_data,walk_data,lib_data=load_data()
 
 # 감정 ↔ 회복 방향 ↔ 추천 콘텐츠 매핑
 mapping_data = {
