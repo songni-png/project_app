@@ -12,9 +12,9 @@ data_path_3 = "https://raw.githubusercontent.com/songni-png/project_app/main/bra
 @st.cache_data
 def load_data():
     try:
-        activity_data = pd.read_csv(data_path_1, encoding='utf-8-sig')
+        activity_data = pd.read_csv(data_path_1, encoding='utf-8', errors='replace')
     except UnicodeEncodeError:
-        activity_data = pd.read_csv(data_path_1, encoding='utf-8')
+        activity_data = pd.read_csv(data_path_1, encoding='cp949', errors='replace')
 
     try:
         walk_data = pd.read_excel(data_path_2, engine="openpyxl")
@@ -30,6 +30,7 @@ def load_data():
 
 # 데이터 로드 실행
 activity_data, walk_data, lib_data = load_data()
+
 
 import streamlit as st
 import pandas as pd
