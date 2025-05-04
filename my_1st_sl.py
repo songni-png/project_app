@@ -62,7 +62,7 @@ if st.button("추천 받기"):
     st.write(f"✅ 시간대: {time_of_day}")
     st.write(f"✅ 회복 목표: {recovery_direction}")
 
-   st.subheader("📚 도서관 추천")
+    st.subheader("📚 도서관 추천")
     filtered_libs = lib_data[lib_data["address2"] == location].head(5)
     st.write(filtered_libs[["lib_name", "addr"]])
 
