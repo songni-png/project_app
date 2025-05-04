@@ -9,16 +9,14 @@ import glob
 def load_data():
     data_path_1 = os.path.abspath('branch/서울_문화_시설_activity.csv')
     data_path_2 = os.path.abspath('branch/산책로_서울_추출.xlsx')
-    data_path_3 = os.path.abspath('branch/도서관_서울_데이터.xlsx')
-    
+
     # CSV 데이터 불러오기
     activity_data = pd.read_csv(data_path_1, header=0, encoding='utf-8')
     walk_data = pd.read_excel(data_path_2, header=0, encoding='utf-8')
-    lib_data = pd.read_excel(data_path_3, header=0, encoding='utf-8')
     
-    return activity_data,walk_data,lib_data
+    return activity_data,walk_data
 
-activity_data,walk_data,lib_data=load_data()
+activity_data,walk_data=load_data()
 
 # 감정 ↔ 회복 방향 ↔ 추천 콘텐츠 매핑
 mapping_data = {
