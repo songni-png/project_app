@@ -1,8 +1,6 @@
 import streamlit as st
 import pandas as pd
-import sys
-
-sys.stdout.reconfigure(encoding='utf-8')
+import urllib.request
 
 # GitHub raw 데이터 URL 설정
 data_path_1 = "https://raw.githubusercontent.com/songni-png/project_app/main/branch/서울_문화_시설_activity.csv"
@@ -11,25 +9,21 @@ data_path_3 = "https://raw.githubusercontent.com/songni-png/project_app/main/bra
 
 @st.cache_data
 def load_data():
+    # 데이터 다운로드 후 UTF-8로 변환
     try:
-        activity_data = pd.read_csv(data_path_1, encoding='utf-8', errors='replace')
-    except UnicodeEncodeError:
-        activity_data = pd.read_csv(data_path_1, encoding='cp949', errors='replace')
+        response = urllib.request.urlopen(data_path_1)
+        activity_data = pd.read_csv(response, encoding='utf-8-sig')
+    except UnicodeDecodeError:
+        activity_data = pd.read_csv(response, encoding='utf-8')
 
-    try:
-        walk_data = pd.read_excel(data_path_2, engine="openpyxl")
-    except UnicodeEncodeError:
-        walk_data = pd.read_excel(data_path_2, engine="openpyxl")
-
-    try:
-        lib_data = pd.read_excel(data_path_3, engine="openpyxl")
-    except UnicodeEncodeError:
-        lib_data = pd.read_excel(data_path_3, engine="openpyxl")
+    walk_data = pd.read_excel(data_path_2, engine="openpyxl")
+    lib_data = pd.read_excel(data_path_3, engine="openpyxl")
 
     return activity_data, walk_data, lib_data
 
 # 데이터 로드 실행
 activity_data, walk_data, lib_data = load_data()
+
 
 
 import streamlit as st
