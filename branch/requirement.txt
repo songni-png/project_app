@@ -9,3 +9,4 @@ shapely
 streamlit-elements
 os
 glob
+openpyxl
