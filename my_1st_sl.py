@@ -1,55 +1,22 @@
 import streamlit as st
 import pandas as pd
-import urllib.request
 
-# GitHub raw 데이터 URL 설정
-data_path_1 = "https://raw.githubusercontent.com/songni-png/project_app/main/branch/서울_문화_시설_activity.csv"
-data_path_2 = "https://raw.githubusercontent.com/songni-png/project_app/main/branch/산책로_서울_추출.xlsx"
-data_path_3 = "https://raw.githubusercontent.com/songni-png/project_app/main/branch/도서관_서울_데이터.xlsx"
-
-@st.cache_data
-def load_data():
-    # 데이터 다운로드 후 UTF-8로 변환
-    try:
-        response = urllib.request.urlopen(data_path_1)
-        activity_data = pd.read_csv(response, encoding='utf-8-sig')
-    except UnicodeDecodeError:
-        activity_data = pd.read_csv(response, encoding='utf-8')
-
-    walk_data = pd.read_excel(data_path_2, engine="openpyxl")
-    lib_data = pd.read_excel(data_path_3, engine="openpyxl")
-
-    return activity_data, walk_data, lib_data
-
-# 데이터 로드 실행
-activity_data, walk_data, lib_data = load_data()
-
-
-
-import streamlit as st
-import pandas as pd
-import os
-import glob
-
-
-# GitHub raw 데이터 URL 설정
-data_path_1 = "https://raw.githubusercontent.com/songni-png/project_app/main/branch/서울_문화_시설_activity.csv"
-data_path_2 = "https://raw.githubusercontent.com/songni-png/project_app/main/branch/산책로_서울_추출.xlsx"
-data_path_3 = "https://raw.githubusercontent.com/songni-png/project_app/main/branch/도서관_서울_데이터.xlsx"
+# ✅ 올바른 GitHub RAW URL 경로 확인
+data_path_1 = "https://raw.githubusercontent.com/songni-png/project_app/main/서울_문화_시설_activity.csv"
+data_path_2 = "https://raw.githubusercontent.com/songni-png/project_app/main/산책로_서울_추출.xlsx"
+data_path_3 = "https://raw.githubusercontent.com/songni-png/project_app/main/도서관_서울_데이터.xlsx"
 
 @st.cache_data
 def load_data():
-    # GitHub에서 CSV 데이터 불러오기
+    # 한글 인코딩 문제 해결
     activity_data = pd.read_csv(data_path_1, encoding='cp949')
-    
-    # GitHub에서 Excel 데이터 불러오기
-    walk_data = pd.read_excel(data_path_2, engine="openpyxl")
-    lib_data = pd.read_excel(data_path_3, engine="openpyxl")
-
+    walk_data = pd.read_excel(data_path_2, engine='openpyxl')
+    lib_data = pd.read_excel(data_path_3, engine='openpyxl')
     return activity_data, walk_data, lib_data
 
 # 데이터 로드 실행
 activity_data, walk_data, lib_data = load_data()
+
 
 # 감정 ↔ 회복 방향 ↔ 추천 콘텐츠 매핑
 mapping_data = {
