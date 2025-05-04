@@ -2,6 +2,9 @@ import streamlit as st
 import pandas as pd
 import os
 import glob
+import sys
+
+sys.stdout.reconfigure(encoding='utf-8')
 
 
 # GitHub raw 데이터 URL 설정
