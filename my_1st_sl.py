@@ -12,7 +12,7 @@ data_path_3 = "https://raw.githubusercontent.com/songni-png/project_app/main/bra
 @st.cache_data
 def load_data():
     # GitHub에서 CSV 데이터 불러오기
-    activity_data = pd.read_csv(data_path_1, encoding='utf-8-sig')
+    activity_data = pd.read_csv(data_path_1, encoding='cp949')
     
     # GitHub에서 Excel 데이터 불러오기
     walk_data = pd.read_excel(data_path_2, engine="openpyxl")
