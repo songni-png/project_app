@@ -2,20 +2,18 @@ import streamlit as st
 import pandas as pd
 
 # ✅ 올바른 GitHub RAW URL 경로 확인
-data_path_1 = "https://raw.githubusercontent.com/songni-png/project_app/main/서울_문화_시설_activity.csv"
-data_path_2 = "https://raw.githubusercontent.com/songni-png/project_app/main/산책로_서울_추출.xlsx"
-data_path_3 = "https://raw.githubusercontent.com/songni-png/project_app/main/도서관_서울_데이터.xlsx"
+data_path_1 = "https://raw.githubusercontent.com/songni-png/project_app/main/seoul_culture_activity.csv"
+data_path_2 = "https://raw.githubusercontent.com/songni-png/project_app/main/seoul_walkway.xlsx"
 
 @st.cache_data
 def load_data():
     # 한글 인코딩 문제 해결
     activity_data = pd.read_csv(data_path_1, encoding='cp949')
     walk_data = pd.read_excel(data_path_2, engine='openpyxl')
-    lib_data = pd.read_excel(data_path_3, engine='openpyxl')
-    return activity_data, walk_data, lib_data
+    return activity_data, walk_data
 
 # 데이터 로드 실행
-activity_data, walk_data, lib_data = load_data()
+activity_data, walk_data = load_data()
 
 
 # 감정 ↔ 회복 방향 ↔ 추천 콘텐츠 매핑
