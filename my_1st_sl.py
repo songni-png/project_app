@@ -4,20 +4,23 @@ import os
 import glob
 
 
-# 데이터 경로 설정
+# GitHub raw 데이터 URL 설정
+data_path_1 = "https://raw.githubusercontent.com/songni-png/project_app/main/branch/서울_문화_시설_activity.csv"
+data_path_2 = "https://raw.githubusercontent.com/songni-png/project_app/main/branch/산책로_서울_추출.xlsx"
+data_path_3 = "https://raw.githubusercontent.com/songni-png/project_app/main/branch/도서관_서울_데이터.xlsx"
+
 @st.cache_data
 def load_data():
-    data_path_1 = os.path.abspath("https://github.com/songni-png/project_app/main/branch/서울_문화_시설_activity.csv")
-    data_path_2 = os.path.abspath("https://github.com/songni-png/project_app/main/branch/산책로_서울_추출.xlsx")
-    data_path_3 = os.path.abspath("https://github.com/songni-png/project_app/main/branch/도서관 서울 데이터.xlsx")
+    # GitHub에서 CSV 데이터 불러오기
+    activity_data = pd.read_csv(data_path_1, encoding='utf-8')
     
-    # CSV 데이터 불러오기
-    activity_data = pd.read_csv(data_path_1, header=0, encoding='utf-8')
-    walk_data = pd.read_excel(data_path_2, header=0,engine="openpyxl")
-    lib_data = pd.read_excel(data_path_3, header=0,engine="openpyxl")
-    
-    return activity_data,walk_data,lib_data
+    # GitHub에서 Excel 데이터 불러오기
+    walk_data = pd.read_excel(data_path_2, engine="openpyxl")
+    lib_data = pd.read_excel(data_path_3, engine="openpyxl")
 
+    return activity_data, walk_data, lib_data
+
+# 데이터 로드 실행
 activity_data, walk_data, lib_data = load_data()
 
 # 감정 ↔ 회복 방향 ↔ 추천 콘텐츠 매핑
@@ -59,17 +62,14 @@ if st.button("추천 받기"):
     st.write(f"✅ 시간대: {time_of_day}")
     st.write(f"✅ 회복 목표: {recovery_direction}")
 
-    # 도서관 추천 (선택한 위치 기준 필터링)
-    st.subheader("📚 도서관 추천")
+   st.subheader("📚 도서관 추천")
     filtered_libs = lib_data[lib_data["address2"] == location].head(5)
     st.write(filtered_libs[["lib_name", "addr"]])
-    
-    # 산책로 추천 (산책로 데이터 임의 활용)
+
     st.subheader("🚶‍♂️ 산책로 추천")
     filtered_walks = walk_data[walk_data["address2"] == location].head(3)
     st.write(filtered_walks[["walk_name", "addr"]])
 
-    # 활동 추천 (활동 데이터 활용)
     st.subheader("🎨 추천 활동")
     filtered_activities = activity_data[activity_data["address2"] == location].head(3)
     st.write(filtered_activities[["activity_name", "addr"]])
