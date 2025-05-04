@@ -2,8 +2,8 @@ import streamlit as st
 import pandas as pd
 
 # ✅ 올바른 GitHub RAW URL 경로 확인
-data_path_1 = "https://raw.githubusercontent.com/songni-png/project_app/main/seoul_culture_activity.csv"
-data_path_2 = "https://raw.githubusercontent.com/songni-png/project_app/main/seoul_walkway.xlsx"
+data_path_1 = "https://raw.githubusercontent.com/songni-png/project_app/refs/heads/main/branch/seoul_culture_activity.csv"
+data_path_2 = "https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fraw.githubusercontent.com%2Fsongni-png%2Fproject_app%2Frefs%2Fheads%2Fmain%2Fbranch%2Fseoul_walkway.xlsx&wdOrigin=BROWSELINK"
 
 @st.cache_data
 def load_data():
