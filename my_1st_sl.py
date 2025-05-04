@@ -12,9 +12,9 @@ def load_data():
     data_path_3 = os.path.abspath('branch/도서관 서울 데이터.xlsx')
     
     # CSV 데이터 불러오기
-    activity_data = pd.read_csv(data_path_1, header=1, encoding='utf-8')
-    walk_data = pd.read_excel(data_path_2, header=1, encoding='utf-8')
-    lib_data = pd.read_excel(data_path_3, header=1, encoding='utf-8')
+    activity_data = pd.read_csv(data_path_1, header=0, encoding='utf-8')
+    walk_data = pd.read_excel(data_path_2, header=0, encoding='utf-8')
+    lib_data = pd.read_excel(data_path_3, header=0, encoding='utf-8')
     
     return activity_data,walk_data,lib_data
 
