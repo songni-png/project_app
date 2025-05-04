@@ -1,5 +1,38 @@
 import streamlit as st
 import pandas as pd
+import sys
+
+sys.stdout.reconfigure(encoding='utf-8')
+
+# GitHub raw 데이터 URL 설정
+data_path_1 = "https://raw.githubusercontent.com/songni-png/project_app/main/branch/서울_문화_시설_activity.csv"
+data_path_2 = "https://raw.githubusercontent.com/songni-png/project_app/main/branch/산책로_서울_추출.xlsx"
+data_path_3 = "https://raw.githubusercontent.com/songni-png/project_app/main/branch/도서관_서울_데이터.xlsx"
+
+@st.cache_data
+def load_data():
+    try:
+        activity_data = pd.read_csv(data_path_1, encoding='utf-8-sig')
+    except UnicodeEncodeError:
+        activity_data = pd.read_csv(data_path_1, encoding='utf-8')
+
+    try:
+        walk_data = pd.read_excel(data_path_2, engine="openpyxl")
+    except UnicodeEncodeError:
+        walk_data = pd.read_excel(data_path_2, engine="openpyxl")
+
+    try:
+        lib_data = pd.read_excel(data_path_3, engine="openpyxl")
+    except UnicodeEncodeError:
+        lib_data = pd.read_excel(data_path_3, engine="openpyxl")
+
+    return activity_data, walk_data, lib_data
+
+# 데이터 로드 실행
+activity_data, walk_data, lib_data = load_data()
+
+import streamlit as st
+import pandas as pd
 import os
 import glob
 
