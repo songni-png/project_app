@@ -7,9 +7,9 @@ import glob
 # 데이터 경로 설정
 @st.cache_data
 def load_data():
-    data_path_1 = os.path.abspath('branch/서울_문화_시설_activity.csv')
-    data_path_2 = os.path.abspath('branch/산책로_서울_추출.xlsx')
-    data_path_3 = os.path.abspath('branch/도서관_서울_데이터.xlsx')
+    data_path_1 = os.path.abspath("https://raw.githubusercontent.com/songni-png/project_app/main/branch/서울_문화_시설_activity.csv")
+    data_path_2 = os.path.abspath("https://raw.githubusercontent.com/songni-png/project_app/main/branch/산책로_서울_추출.xlsx")
+    data_path_3 = os.path.abspath("https://raw.githubusercontent.com/songni-png/project_app/main/branch/도서관 서울 데이터.xlsx")
     
     # CSV 데이터 불러오기
     activity_data = pd.read_csv(data_path_1, header=0, encoding='utf-8')
