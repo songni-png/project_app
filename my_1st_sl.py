@@ -4,18 +4,21 @@ import os
 import glob
 
 
-@st.cache_data
-
 # 데이터 경로 설정
-data_path_1 = os.path.abspath('branch/서울_문화_시설_activity.csv')
-data_path_2 = os.path.abspath('branch/산책로_서울_추출.xlsx')
-data_path_2 = os.path.abspath('branch/도서관 서울 데이터.xlsx')
+@st.cache_data
+def load_data():
+    data_path_1 = os.path.abspath('branch/서울_문화_시설_activity.csv')
+    data_path_2 = os.path.abspath('branch/산책로_서울_추출.xlsx')
+    data_path_2 = os.path.abspath('branch/도서관 서울 데이터.xlsx')
+    
+    # CSV 데이터 불러오기
+    activity_data = pd.read_csv(data_path_1, header=1, encoding='utf-8')
+    walk_data = pd.read_excel(data_path_2, header=1, encoding='utf-8')
+    lib_data = pd.read_excel(data_path_3, header=1, encoding='utf-8')
+    
+    return activity_data,walk_dat,lib_data
 
-# CSV 데이터 불러오기
-activity_data = pd.read_csv(data_path_1, header=1, encoding='utf-8')
-walk_data = pd.read_excel(data_path_2, header=1, encoding='utf-8')
-lib_data = pd.read_excel(data_path_3, header=1, encoding='utf-8')
-
+activity_data,walk_dat,lib_data=load_data()
 
 # 감정 ↔ 회복 방향 ↔ 추천 콘텐츠 매핑
 mapping_data = {
