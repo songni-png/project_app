@@ -9,10 +9,12 @@ import glob
 # 데이터 경로 설정
 data_path_1 = os.path.abspath('branch/서울_문화_시설_activity.csv')
 data_path_2 = os.path.abspath('branch/산책로_서울_추출.xlsx')
+data_path_2 = os.path.abspath('branch/도서관 서울 데이터.xlsx')
 
 # CSV 데이터 불러오기
 activity_data = pd.read_csv(data_path_1, header=1, encoding='utf-8')
-walk_data = pd.read_csv(data_path_2, header=1, encoding='utf-8')
+walk_data = pd.read_excel(data_path_2, header=1, encoding='utf-8')
+lib_data = pd.read_excel(data_path_3, header=1, encoding='utf-8')
 
 
 # 감정 ↔ 회복 방향 ↔ 추천 콘텐츠 매핑
@@ -54,7 +56,11 @@ if st.button("추천 받기"):
     st.write(f"✅ 시간대: {time_of_day}")
     st.write(f"✅ 회복 목표: {recovery_direction}")
 
-
+    # 도서관 추천 (선택한 위치 기준 필터링)
+    st.subheader("📚 도서관 추천")
+    filtered_libs = lib_data[lib_data["address2"] == location].head(5)
+    st.write(filtered_libs[["lib_name", "addr"]])
+    
     # 산책로 추천 (산책로 데이터 임의 활용)
     st.subheader("🚶‍♂️ 산책로 추천")
     filtered_walks = walk_data[walk_data["address2"] == location].head(3)
