@@ -13,8 +13,8 @@ def load_data():
     
     # CSV 데이터 불러오기
     activity_data = pd.read_csv(data_path_1, header=0, encoding='utf-8')
-    walk_data = pd.read_excel(data_path_2, header=0)
-    lib_data = pd.read_excel(data_path_3, header=0)
+    walk_data = pd.read_excel(data_path_2, header=0,engine="openpyxl")
+    lib_data = pd.read_excel(data_path_3, header=0,engine="openpyxl")
     
     return activity_data,walk_data,lib_data
 
