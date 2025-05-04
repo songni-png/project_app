@@ -8,7 +8,7 @@ data_path_2 = "https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fr
 @st.cache_data
 def load_data():
     # 한글 인코딩 문제 해결
-    activity_data = pd.read_csv(data_path_1, encoding='utf-8-sig')
+    activity_data = pd.read_csv(data_path_1, encoding='utf-8')
     walk_data = pd.read_excel(data_path_2, engine='openpyxl')
     return activity_data, walk_data
 
