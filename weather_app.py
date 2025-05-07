@@ -1,4 +1,3 @@
-import streamlit as st
 import requests
 import xml.etree.ElementTree as ET
 
@@ -21,7 +20,3 @@ def get_weather_info(area_name):
         return weather_data
     else:
         return f"❌ 오류 발생: {response.status_code}"
-    st.error(f"❌ 오류 발생: {response.status_code}")
-
-# 실행 방법 안내
-st.info("🔹 이 코드는 Streamlit을 통해 실행되며, GitHub에 업로드하여 배포 가능합니다.")
