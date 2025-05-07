@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import os
 
 # 데이터 경로 설정
 data_path = os.path.abspath('activity.xlsx')
