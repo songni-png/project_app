@@ -1,12 +1,16 @@
 import streamlit as st
 import pandas as pd
 import os
+from weather_app import get_weather_info
 
 # 데이터 경로 설정
 data_path = os.path.abspath('activity.xlsx')
 
+# weather_app.py에서 날씨 데이터 가져오기
+weather_info = get_weather_info(location)
 
-
+st.subheader(f"📍 위치: {location}")
+st.write(f"✅ 날씨: {weather_info}")
 
 # 감정 ↔ 회복 방향 ↔ 추천 콘텐츠 매핑
 mapping_data = {
