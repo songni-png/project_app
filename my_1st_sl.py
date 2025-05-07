@@ -37,6 +37,8 @@ radius = st.slider("추천 반경 (km)", 10, 30, 20)
 
 # weather_app.py에서 날씨 데이터 가져오기
 weather_info = get_weather_info(location)
+st.subheader(f"📍 위치: {location}")
+st.write(f"✅ 날씨 정보: {weather_info}")
 
 # 추천 콘텐츠 제공
 if st.button("추천 받기"):
