@@ -32,7 +32,7 @@ emotion = st.selectbox("현재 기분을 선택하세요", list(mapping_data.key
 recovery_direction = st.selectbox("회복 방향을 선택하세요", ["위로", "감정 정화", "에너지 회복", "집중력 회복", "안정", "감정 자극", "사회적 연결", "몰입", "스트레스 해소", "소통"])
 weather = st.selectbox("현재 날씨를 선택하세요", ["맑음", "흐림", "비", "눈", "강풍"])
 time_of_day = st.selectbox("현재 시간대를 선택하세요", ["아침", "점심", "저녁"])
-location = st.selectbox("현재 위치를 선택하세요", ["성수", "홍대", "마포", "용산", "이태원"])
+location = st.selectbox("현재 위치를 선택하세요", ["광화문·덕수궁", "강남역", "홍대입구", "서울역", "건대입구"])
 radius = st.slider("추천 반경 (km)", 10, 30, 20)
 
 # weather_app.py에서 날씨 데이터 가져오기
