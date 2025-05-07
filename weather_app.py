@@ -22,8 +22,12 @@ def get_weather_info(area_name):
         root = ET.fromstring(response.text)
 
         # AREA_NM 및 WEATHER_STTS 추출
-        area_nm = root.find(".//AREA_NM").text if root.find(".//AREA_NM") is not None else "정보 없음"
-        weather_stts = root.find(".//WEATHER_STTS").text if root.find(".//WEATHER_STTS") is not None else "날씨 정보 없음"
+        area_nm_element = root.find(".//AREA_NM")
+        weather_element = root.find(".//WEATHER_STTS")
+
+        # 예외 처리
+        area_nm = area_nm_element.text if area_nm_element is not None else "정보 없음"
+        weather_stts = weather_element.text if weather_element is not None and weather_element.text else "날씨 정보 없음"
 
         return {"location": area_nm, "weather": weather_stts}
     else:
