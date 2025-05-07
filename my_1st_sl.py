@@ -6,11 +6,7 @@ from weather_app import get_weather_info
 # 데이터 경로 설정
 data_path = os.path.abspath('activity.xlsx')
 
-# weather_app.py에서 날씨 데이터 가져오기
-weather_info = get_weather_info(location)
 
-st.subheader(f"📍 위치: {location}")
-st.write(f"✅ 날씨: {weather_info}")
 
 # 감정 ↔ 회복 방향 ↔ 추천 콘텐츠 매핑
 mapping_data = {
@@ -38,6 +34,9 @@ weather = st.selectbox("현재 날씨를 선택하세요", ["맑음", "흐림", 
 time_of_day = st.selectbox("현재 시간대를 선택하세요", ["아침", "점심", "저녁"])
 location = st.selectbox("현재 위치를 선택하세요", ["성수", "홍대", "마포", "용산", "이태원"])
 radius = st.slider("추천 반경 (km)", 10, 30, 20)
+
+# weather_app.py에서 날씨 데이터 가져오기
+weather_info = get_weather_info(location)
 
 # 추천 콘텐츠 제공
 if st.button("추천 받기"):
