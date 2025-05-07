@@ -6,7 +6,7 @@ import os
 data_path = os.path.abspath('activity.xlsx')
 
 # excel 데이터 불러오기
-df_seoul_activity = pd.read_excel(data_path, header=0, encoding='utf-8')
+df_seoul_activity = pd.read_excel(data_path, header=0)
 
 
 # 감정 ↔ 회복 방향 ↔ 추천 콘텐츠 매핑
