@@ -46,8 +46,8 @@ if st.button("추천 받기"):
     st.subheader(f"📝 '{emotion}' 상태에서 추천되는 활동")
     st.write(", ".join(recommended_activities))
 
-    st.subheader(f"📍 위치: {location} ({radius}km 반경)")
-    st.write(f"✅ 날씨: {weather}")
+    st.subheader(f"📍 위치: {location}")
+    st.write(f"✅ 날씨 정보: {weather_info}")
     st.write(f"✅ 시간대: {time_of_day}")
     st.write(f"✅ 회복 목표: {recovery_direction}")
 
