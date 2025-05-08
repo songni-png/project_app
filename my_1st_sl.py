@@ -3,6 +3,8 @@ import pandas as pd
 import os
 from weather_app import get_weather_info, locations
 
+print(response.text)
+
 # 데이터 경로 설정
 data_path = os.path.abspath('activity.xlsx')
 
