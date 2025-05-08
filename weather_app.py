@@ -9,7 +9,7 @@ SERVICE_NAME = "citydata"
 START_INDEX = 1
 END_INDEX = 5
 REQUEST_TYPE = "xml"
-CSV_FILE = "locations.csv"
+CSV_FILE = "C://Users//soyoe//OneDrive//바탕 화면//홍익대학교//4학년//1학기//시스템분석//Project Data//locations.CSV"
 
 def load_locations(file_path):
     locations = {}
