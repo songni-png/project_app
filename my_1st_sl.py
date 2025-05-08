@@ -1,4 +1,4 @@
-import streamlit_js_eval
+from streamlit_js_eval import streamlit_js_eval
 import streamlit as st
 import pandas as pd
 import os
