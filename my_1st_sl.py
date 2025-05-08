@@ -37,7 +37,7 @@ area_name = st.selectbox("지역을 선택하세요:", list(locations.keys()))
 radius = st.slider("추천 반경 (km)", 10, 30, 20)
 
 # weather_app.py에서 날씨 데이터 가져오기
-weather_info = get_weather_info(location)
+weather_info = get_weather_info(area_name)
 st.subheader(f"📍 위치: {location}")
 st.write(f"✅ 날씨 정보: {weather_info}")
 # 버튼 클릭 시 API 호출
