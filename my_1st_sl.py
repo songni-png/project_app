@@ -1,5 +1,5 @@
-import streamlit as st
 import streamlit_js_eval
+import streamlit as st
 import pandas as pd
 import os
 from weather_app import get_weather_info, locations
