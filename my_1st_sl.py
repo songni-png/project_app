@@ -3,6 +3,8 @@ import streamlit as st
 import pandas as pd
 import os
 from weather_app import get_weather_info, locations
+from datetime import datetime
+
 
 
 # 데이터 경로 설정
