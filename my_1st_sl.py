@@ -40,25 +40,28 @@ radius = st.slider("추천 반경 (km)", 10, 30, 20)
 weather_info = get_weather_info(area_name)
 
 # 버튼 클릭 시 API 호출
+# 날씨 정보 조회 버튼
 if st.button("날씨 조회하기"):
     result = get_weather_info(area_name)
-    
+
     if "error" in result:
         st.error(result["error"])
     else:
         st.subheader(f"{result['지역명']} 날씨 정보")
-        st.write(f"**날씨**: {result['날씨']}")
+        st.write(f"**관측시간**: {result['관측시간']}")
         st.write(f"**기온**: {result['기온']}℃")
+        st.write(f"**주소**: {result['주소']}")
+        st.write(f"**위도**: {result['위도']}")
+        st.write(f"**경도**: {result['경도']}")
 
 # 추천 콘텐츠 제공
 if st.button("추천 받기"):
     recommended_activities = mapping_data.get(emotion, [])
-
     st.subheader(f"📝 '{emotion}' 상태에서 추천되는 활동")
     st.write(", ".join(recommended_activities))
 
-    st.subheader(f"📍 위치: {location}")
-    st.write(f"✅ 날씨 정보: {weather_info}")
+    st.subheader(f"📍 위치: {area_name}")
+    st.write(f"✅ 날씨: {weather}")
     st.write(f"✅ 시간대: {time_of_day}")
     st.write(f"✅ 회복 목표: {recovery_direction}")
 
