@@ -9,7 +9,7 @@ SERVICE_NAME = "citydata"
 START_INDEX = 1
 END_INDEX = 5
 REQUEST_TYPE = "xml"
-CSV_FILE = os.path.join(os.getcwd(), "locations.csv")
+CSV_FILE = os.path.join(os.getcwd(), "locations_utf8.csv")
 
 
 def load_locations(file_path):
@@ -34,14 +34,26 @@ def get_weather_info(area_name):
         root = ET.fromstring(response.text)
         weather_element = root.find(".//WEATHER_STTS")
         temp_element = root.find(".//TEMP")
+        sensible_temp_element = root.find(".//SENSIBLE_TEMP")
+        humidity_element = root.find(".//HUMIDITY")
+        wind_element = root.find(".//WIND_SPD")
+        precpt_element = root.find(".//PRECPT_TYPE")
 
         weather_stts = weather_element.text if weather_element is not None else "정보 없음"
         temp = temp_element.text if temp_element is not None else "정보 없음"
+        sensible_temp = sensible_temp_element.text if sensible_temp_element is not None else "정보 없음"
+        humidity = humidity_element.text if humidity_element is not None else "정보 없음"
+        wind_speed = wind_element.text if wind_element is not None else "정보 없음"
+        precipitation = precpt_element.text if precpt_element is not None else "정보 없음"
 
         return {
             "지역명": area_name,
             "날씨": weather_stts,
-            "기온": temp
+            "기온": temp,
+            "체감온도": sensible_temp,
+            "습도": humidity,
+            "풍속": wind_speed,
+            "강수 유형": precipitation
         }
     else:
         return {"error": f"서버 오류: {response.status_code}"}
