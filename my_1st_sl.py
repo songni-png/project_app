@@ -25,7 +25,7 @@ mapping_data = {
 # 장소 데이터 로드
 DATA_FILE = "장소별 감정 TAG_with_coords.csv"
 
-@st.cache_data
+
 def load_data():
     return pd.read_csv(DATA_FILE, encoding="utf-8-sig")
 
