@@ -9,7 +9,6 @@ SERVICE_NAME = "citydata"
 START_INDEX = 1
 END_INDEX = 5
 REQUEST_TYPE = "xml"
-
 CSV_FILE = "locations.csv"
 
 def load_locations(file_path):
@@ -32,26 +31,30 @@ def get_weather_info(area_name):
 
     if response.status_code == 200:
         root = ET.fromstring(response.text)
-        
-        # HOTSPOT 컬렉션 가져오기
         hotspot = root.find(".//row")
         if hotspot is None:
             return {"error": "해당 지역에 데이터가 없습니다."}
 
-        # 데이터 추출
-        weather_stts = hotspot.findtext("WEATHER_STTS", "정보 없음")
-        temp = hotspot.findtext("TEMP", "정보 없음")
-        address = hotspot.findtext("ADDRESS", "정보 없음")
+        weather_stts_node = hotspot.find("WEATHER_STTS")
+        if weather_stts_node is not None:
+            temp = weather_stts_node.findtext("TEMP", "정보 없음")
+            weather_time = weather_stts_node.findtext("WEATHER_TIME", "정보 없음")
+        else:
+            temp = "정보 없음"
+            weather_time = "정보 없음"
+
+        address = hotspot.findtext("STAT_ADDR", "정보 없음")
         lat = hotspot.findtext("LAT", "정보 없음")
         lng = hotspot.findtext("LNG", "정보 없음")
 
         return {
             "지역명": area_name,
-            "날씨": weather_stts,
-            "기온": f"{temp}℃",
+            "관측시간": weather_time,
+            "기온": temp,
             "주소": address,
             "위도": lat,
             "경도": lng
         }
     else:
         return {"error": f"서버 오류: {response.status_code}"}
+
