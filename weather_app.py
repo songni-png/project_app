@@ -29,6 +29,8 @@ def get_weather_info(area_name):
     url = f"{BASE_URL}/{API_KEY}/{REQUEST_TYPE}/{SERVICE_NAME}/{START_INDEX}/{END_INDEX}/{area_code}"
     response = requests.get(url)
 
+    print(response.text) 
+    
     if response.status_code == 200:
         root = ET.fromstring(response.text)
         hotspot = root.find(".//row")
