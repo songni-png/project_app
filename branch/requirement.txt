@@ -6,11 +6,7 @@ folium
 streamlit-folium
 fiona
 shapely
-streamlit-elements
-os
-glob
+streamlit-js-eval
 openpyxl
-csv
-streamlit_js_eval
-datetime
 pyarrow
+os
