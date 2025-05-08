@@ -1,6 +1,7 @@
 import requests
 import xml.etree.ElementTree as ET
 import csv
+import os
 
 # API 정보 설정
 API_KEY = "6c7075664f6a756e3130397876735a4a"
@@ -9,7 +10,8 @@ SERVICE_NAME = "citydata"
 START_INDEX = 1
 END_INDEX = 5
 REQUEST_TYPE = "xml"
-CSV_FILE = "locations.csv"  # GitHub에 업로드한 CSV 파일 경로
+# CSV 파일 경로 설정 (현재 디렉토리에서 찾기)
+CSV_FILE = os.path.abspath("locations.csv") # GitHub에 업로드한 CSV 파일 경로
 
 def load_locations(file_path):
     """
