@@ -23,7 +23,7 @@ def load_locations(file_path):
     return locations
 
 # CSV 파일에서 데이터 로드
-locations = load_locations(locations.CSV)
+locations = load_locations(CSV_FILE)
 
 def get_weather_info(area_code):
     """
