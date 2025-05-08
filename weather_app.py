@@ -9,7 +9,8 @@ SERVICE_NAME = "citydata"
 START_INDEX = 1
 END_INDEX = 5
 REQUEST_TYPE = "xml"
-CSV_FILE = "C://Users//soyoe//OneDrive//바탕 화면//홍익대학교//4학년//1학기//시스템분석//Project Data//locations.CSV"
+
+CSV_FILE = "locations.csv"
 
 def load_locations(file_path):
     locations = {}
@@ -29,34 +30,18 @@ def get_weather_info(area_name):
     url = f"{BASE_URL}/{API_KEY}/{REQUEST_TYPE}/{SERVICE_NAME}/{START_INDEX}/{END_INDEX}/{area_code}"
     response = requests.get(url)
 
-    print(response.text) 
-    
     if response.status_code == 200:
         root = ET.fromstring(response.text)
-        hotspot = root.find(".//row")
-        if hotspot is None:
-            return {"error": "해당 지역에 데이터가 없습니다."}
+        weather_element = root.find(".//WEATHER_STTS")
+        temp_element = root.find(".//TEMP")
 
-        weather_stts_node = hotspot.find("WEATHER_STTS")
-        if weather_stts_node is not None:
-            temp = weather_stts_node.findtext("TEMP", "정보 없음")
-            weather_time = weather_stts_node.findtext("WEATHER_TIME", "정보 없음")
-        else:
-            temp = "정보 없음"
-            weather_time = "정보 없음"
-
-        address = hotspot.findtext("STAT_ADDR", "정보 없음")
-        lat = hotspot.findtext("LAT", "정보 없음")
-        lng = hotspot.findtext("LNG", "정보 없음")
+        weather_stts = weather_element.text if weather_element is not None else "정보 없음"
+        temp = temp_element.text if temp_element is not None else "정보 없음"
 
         return {
             "지역명": area_name,
-            "관측시간": weather_time,
-            "기온": temp,
-            "주소": address,
-            "위도": lat,
-            "경도": lng
+            "날씨": weather_stts,
+            "기온": temp
         }
     else:
         return {"error": f"서버 오류: {response.status_code}"}
-
