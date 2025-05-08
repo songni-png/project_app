@@ -1,10 +1,9 @@
-from streamlit_js_eval import streamlit_js_eval
 import streamlit as st
+from streamlit_js_eval import streamlit_js_eval
 import pandas as pd
+from datetime import datetime
 import os
 from weather_app import get_weather_info, locations
-from datetime import datetime
-
 
 
 # 데이터 경로 설정
@@ -27,11 +26,11 @@ mapping_data = {
 }
 
 # 장소 데이터 로드
-DATA_FILE = "장소별 감정 TAG_with_coords.csv"
+DATA_FILE = r"C:\Users\soyoe\OneDrive\바탕 화면\홍익대학교\4학년\1학기\시스템분석\Project Data\tag_coordi.csv"
 
 
 def load_data():
-    return pd.read_csv(DATA_FILE, encoding="utf-8-sig")
+    return pd.read_csv(DATA_FILE, encoding="cp949")
 
 df = load_data()
 
@@ -98,5 +97,9 @@ if st.button("날씨 조회하기"):
         st.subheader(f"{result['지역명']} 날씨 정보")
         st.write(f"**날씨**: {result['날씨']}")
         st.write(f"**기온**: {result['기온']}℃")
+        st.write(f"**체감온도**: {result['체감온도']}℃")
+        st.write(f"**습도**: {result['습도']}%")
+        st.write(f"**풍속**: {result['풍속']} m/s")
+        st.write(f"**강수 유형**: {result['강수 유형']}")
 
 st.success("🎯 해당 조건에 맞는 장소와 활동을 검색하여 추천할 수 있습니다!")
