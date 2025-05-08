@@ -11,8 +11,8 @@ START_INDEX = 1
 END_INDEX = 5
 REQUEST_TYPE = "xml"
 # CSV 파일 경로 설정 (현재 디렉토리에서 찾기)
-CSV_FILE = os.path.join(os.getcwd(), "locations.csv")
-print(CSV_FILE)
+CSV_FILE = os.path.join(os.getcwd(), "locations.CSV")
+
 
 
 def load_locations(file_path):
