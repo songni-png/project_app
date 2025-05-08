@@ -30,16 +30,12 @@ emotion = st.selectbox("현재 기분을 선택하세요", list(mapping_data.key
 recovery_direction = st.selectbox("회복 방향을 선택하세요", ["위로", "감정 정화", "에너지 회복", "집중력 회복", "안정", "감정 자극", "사회적 연결", "몰입", "스트레스 해소", "소통"])
 weather = st.selectbox("현재 날씨를 선택하세요", ["맑음", "흐림", "비", "눈", "강풍"])
 time_of_day = st.selectbox("현재 시간대를 선택하세요", ["아침", "점심", "저녁"])
-area_name = st.selectbox("지역을 선택하세요:", list(locations.keys()))
+area_name = st.selectbox("지역을 선택하세요:", list(locations.keys()), key="area_name_select")
 radius = st.slider("추천 반경 (km)", 10, 30, 20)
 
 # weather_app.py에서 날씨 데이터 가져오기
 weather_info = get_weather_info(area_name)
 
-
-        
-# 지역명 선택
-area_name = st.selectbox("지역을 선택하세요:", list(locations.keys()))
 
 # 버튼 클릭 시 API 호출
 if st.button("날씨 조회하기"):
