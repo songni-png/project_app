@@ -32,16 +32,26 @@ def get_weather_info(area_name):
 
     if response.status_code == 200:
         root = ET.fromstring(response.text)
-        weather_element = root.find(".//WEATHER_STTS")
-        temp_element = root.find(".//TEMP")
+        
+        # HOTSPOT 컬렉션 가져오기
+        hotspot = root.find(".//row")
+        if hotspot is None:
+            return {"error": "해당 지역에 데이터가 없습니다."}
 
-        weather_stts = weather_element.text if weather_element is not None else "정보 없음"
-        temp = temp_element.text if temp_element is not None else "정보 없음"
+        # 데이터 추출
+        weather_stts = hotspot.findtext("WEATHER_STTS", "정보 없음")
+        temp = hotspot.findtext("TEMP", "정보 없음")
+        address = hotspot.findtext("ADDRESS", "정보 없음")
+        lat = hotspot.findtext("LAT", "정보 없음")
+        lng = hotspot.findtext("LNG", "정보 없음")
 
         return {
             "지역명": area_name,
             "날씨": weather_stts,
-            "기온": temp
+            "기온": f"{temp}℃",
+            "주소": address,
+            "위도": lat,
+            "경도": lng
         }
     else:
         return {"error": f"서버 오류: {response.status_code}"}
