@@ -9,8 +9,8 @@ SERVICE_NAME = "citydata"
 START_INDEX = 1
 END_INDEX = 5
 REQUEST_TYPE = "xml"
+CSV_FILE = os.path.join(os.getcwd(), "locations.csv")
 
-CSV_FILE = "locations.csv"
 
 def load_locations(file_path):
     locations = {}
