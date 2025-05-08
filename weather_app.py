@@ -11,7 +11,7 @@ START_INDEX = 1
 END_INDEX = 5
 REQUEST_TYPE = "xml"
 # CSV 파일 경로 설정 (현재 디렉토리에서 찾기)
-CSV_FILE = os.path.abspath("locations.csv") # GitHub에 업로드한 CSV 파일 경로
+CSV_FILE = os.path.join(os.path.dirname(__file__), "locations.csv")
 
 def load_locations(file_path):
     """
