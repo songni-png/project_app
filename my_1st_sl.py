@@ -1,12 +1,11 @@
 import streamlit as st
 import pandas as pd
 from datetime import datetime
-from streamlit_js_eval import streamlit_js_eval
 import json
 from geopy.distance import geodesic
 import os
-
 os.system("pip install streamlit-js-eval==0.1.7")
+from streamlit_js_eval import streamlit_js_eval
 
 
 st.set_page_config(page_title="회복 루틴 추천기", page_icon="🧘", layout="centered")
