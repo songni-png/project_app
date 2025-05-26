@@ -9,4 +9,6 @@ shapely
 streamlit-js-eval
 openpyxl
 pyarrow
-os
+geopy
+json
+
