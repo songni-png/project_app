@@ -1,40 +1,15 @@
 import streamlit as st
-from streamlit_js_eval import streamlit_js_eval
 import pandas as pd
 from datetime import datetime
-import os
-from weather_app import get_weather_info, locations
+from streamlit_js_eval import streamlit_js_eval
+import json
+from geopy.distance import geodesic
 
 
-# 데이터 경로 설정
-data_path = os.path.abspath('activity.xlsx')
 
-# 감정 ↔ 회복 방향 ↔ 추천 콘텐츠 매핑
-mapping_data = {
-    "행복": ["예술 전시", "음악 공연", "크리에이티브 클래스"],
-    "활력있는": ["스포츠 활동", "카페 탐방", "파티/소셜 모임"],
-    "공허함": ["독서", "힐링 산책로", "명상 클래스"],
-    "번아웃": ["힐링 카페", "스파/온천", "고요한 공간"],
-    "스트레스": ["액티비티 체험 (방탈출, 클라이밍)", "요가"],
-    "무기력": ["춤", "피트니스", "음악 듣기", "야외 활동"],
-    "조급함": ["조용한 독서 공간", "플랜 짜기", "서점 방문"],
-    "슬픔": ["감성 전시회", "조용한 카페", "힐링 음악"],
-    "불안": ["자연 속 산책", "명상", "따뜻한 음식점"],
-    "짜증": ["격렬한 스포츠 활동", "게임 카페", "드라이브"],
-    "혼란": ["퍼즐/보드게임", "독서", "생각 정리 공간"],
-    "우울": ["공동 취미 모임", "친환경 카페", "대화 공간"]
-}
+st.set_page_config(page_title="회복 루틴 추천기", page_icon="🧘", layout="centered")
 
-# 장소 데이터 로드
-DATA_FILE = r"C:\Users\soyoe\OneDrive\바탕 화면\홍익대학교\4학년\1학기\시스템분석\Project Data\tag_coordi.csv"
-
-
-def load_data():
-    return pd.read_csv(DATA_FILE, encoding="cp949")
-
-df = load_data()
-
-# 1️⃣ 위치 정보 가져오기
+# 1. 위치 정보 가져오기 (비동기 Promise 방식)
 loc = streamlit_js_eval(
     js_expressions="""
     new Promise((resolve, reject) => {
@@ -44,62 +19,99 @@ loc = streamlit_js_eval(
         );
     })
     """,
-    key="get_location_promise"
+    key="get_location_with_coords"
 )
 
-# 2️⃣ UI 구성
-st.title("🎭 감정 기반 루틴 추천 시스템")
+# 2. 사용자 UI
+st.title("🧘 회복이 필요한 날을 위한 맞춤 루틴 추천기")
 
 now = datetime.now().strftime("%Y-%m-%d %H:%M")
 st.markdown(f"⏰ 현재 시간: {now}")
 
-# 활동 및 감정 관련 입력
 activity = st.radio("오늘 얼마나 활동하셨나요?", ["많이 움직였어요", "적당히 움직였어요", "거의 안 움직였어요"])
 social = st.radio("얼마나 사람을 만나셨나요?", ["많은 사람을 만났어요", "혼자 있었어요"])
-tag = st.selectbox("원하는 회복 태그를 골라주세요", list(mapping_data.keys()))
+tag = st.selectbox("원하는 회복 태그를 골라주세요", ["힐링", "에너지","감정 정화","감정 자극", "집중력", "안정"])
 
-# 3️⃣ 위치 상태 확인
+# 3. 위치 정보 출력
 if loc and isinstance(loc, dict) and "latitude" in loc:
-    lat, lon = loc['latitude'], loc['longitude']
+    lat, lon = loc["latitude"], loc["longitude"]
     st.success(f"📍 현재 위치: 위도 {lat:.5f}, 경도 {lon:.5f}")
 else:
-    st.warning("📡 위치 정보를 불러오지 못했습니다. 위치 권한을 확인하세요.")
+    st.info("📡 위치 정보를 불러오는 중이거나, 위치 권한이 허용되지 않았습니다.")
+    lat, lon = None, None
 
-# 날씨 및 지역 선택
-weather = st.selectbox("현재 날씨를 선택하세요", ["맑음", "흐림", "비", "눈", "강풍"])
-time_of_day = st.selectbox("현재 시간대를 선택하세요", ["아침", "점심", "저녁"])
-area_name = st.selectbox("지역을 선택하세요:", list(locations.keys()), key="area_name_select")
-radius = st.slider("추천 반경 (km)", 10, 30, 20)
+# 데이터 파일 경로 설정
+DATA_FILE = r"C:\Users\soyoe\OneDrive\바탕 화면\홍익대학교\4학년\1학기\시스템분석\Project Data\tag_coordi_.csv"
+WEATHER_DATA_FILE = r"C:\Users\soyoe\OneDrive\바탕 화면\홍익대학교\4학년\1학기\시스템분석\Project Data\장소별_날씨_결과.csv"
 
-# 4️⃣ 회복 루틴 추천
+# 데이터 로드 함수
+def load_data():
+    return pd.read_csv(DATA_FILE, encoding="cp949")
+
+def load_weather_data():
+    return pd.read_csv(WEATHER_DATA_FILE, encoding="cp949")
+
+# 데이터 로드 및 병합 (초기 1회)
+place_df = load_data()
+weather_df = load_weather_data()
+place_df = place_df.merge(weather_df, on=["NAME", "LAT", "LON"], how="left")
+
+
+# 거리 계산 및 반경 2km 필터
+radius = st.slider("추천 반경 (km)", 1.0, 5.0, 2.5, step=0.1)
+st.session_state.radius_value = radius
+
+# 4. 루틴 추천 실행
 if st.button("회복 루틴 추천받기"):
-    with st.spinner("당신에게 맞는 루틴을 구성 중입니다..."):
-        filtered = df[df["TAG"].str.contains(tag, na=False)]
+    with st.spinner("당신에게 맞는 장소를 찾는 중입니다..."):
+        df = place_df.copy()
         
-        if filtered.empty:
-            st.warning("😞 해당 태그에 맞는 추천 장소가 없습니다.")
+        # 필수 열이 있는지 체크 및 결측 제거
+        df = df.dropna(subset=["LAT", "LON"])
+        df["LAT"] = df["LAT"].astype(float)
+        df["LON"] = df["LON"].astype(float)
+
+        # 태그 필터링
+        df = df[df["TAG"].notna() & df["TAG"].str.contains(tag)].head(5)
+
+        # 거리 계산 함수 정의
+        def compute_distance(row):
+            try:
+                return geodesic((lat, lon), (row["LAT"], row["LON"])).km
+            except:
+                return None
+
+        if lat and lon:
+            df["DIST_KM"] = df.apply(compute_distance, axis=1)
+            df = df.dropna(subset=["DIST_KM"])
+            nearby_df = df[df["DIST_KM"] <= radius].sort_values(by="DIST_KM")
         else:
-            st.markdown("## 📌 추천 루틴")
-            for _, row in filtered.iterrows():
+            nearby_df = df
+
+        # 추천 결과 출력
+        st.markdown(f"## 📌 반경 {st.session_state.radius_value}km 이내 추천 장소")
+        if nearby_df.empty:
+            st.warning(f"조건에 맞는 장소가 반경 {st.session_state.radius_value}km 이내에 없습니다 😢")
+        else:
+            for _, row in nearby_df.iterrows():
                 st.markdown(f"### 🏞️ {row['NAME']}")
                 st.markdown(f"- 📍 위치: {row['LOCATION']}")
-                st.markdown(f"- 🧾 유형: {row['TYPE']}")
-                st.markdown(f"- 🔖 태그: {row['TAG']}")
-                st.markdown("—")
+                st.markdown(f"- 🏷️ 태그: {row['TAG']}")
+                st.markdown(f"- 📏 거리: 약 {row['DIST_KM']:.2f} km")
+                st.markdown("---")
 
-# 5️⃣ 날씨 정보 가져오기
-if st.button("날씨 조회하기"):
-    result = get_weather_info(area_name)
-    
-    if "error" in result:
-        st.error(result["error"])
-    else:
-        st.subheader(f"{result['지역명']} 날씨 정보")
-        st.write(f"**날씨**: {result['날씨']}")
-        st.write(f"**기온**: {result['기온']}℃")
-        st.write(f"**체감온도**: {result['체감온도']}℃")
-        st.write(f"**습도**: {result['습도']}%")
-        st.write(f"**풍속**: {result['풍속']} m/s")
-        st.write(f"**강수 유형**: {result['강수 유형']}")
+                # 장소별 날씨 정보 추가
+                st.markdown(f"🌤️ **{row['NAME']} 근처 날씨 정보**")
+                st.write(f"- 날씨 상태: {row.get('weather', '정보 없음')}")
+                st.write(f"- 기온: {row.get('temperature', '정보 없음')}°C")
+                st.write(f"- 습도: {row.get('humidity', '정보 없음')}%")
+                
+                st.markdown("---")
+                
+        
 
-st.success("🎯 해당 조건에 맞는 장소와 활동을 검색하여 추천할 수 있습니다!")
+            # 지도 시각화
+            st.markdown("### 🗺️ 지도에서 추천 장소 보기")
+            map_df = nearby_df[["LAT", "LON"]].rename(columns={"LAT": "lat", "LON": "lon"})
+            st.map(map_df, use_container_width=True)
+
