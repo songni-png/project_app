@@ -9,4 +9,4 @@ shapely
 streamlit-js-eval==0.1.7
 openpyxl
 pyarrow
-geopy
+geopy==2.4.1
